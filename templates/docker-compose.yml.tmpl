@@ -1,0 +1,21 @@
+---
+version: '2.4'
+services:
+  domoticz:
+    container_name: %name%
+    image: %imgname%
+    read_only: false
+    tmpfs:
+      - /tmp
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    privileged: true
+    volumes:
+      - type: bind
+        source: %vsrc%
+        target: %vdst%
+    ports:
+      - "%eport%:%iport%/tcp"
+networks:
+  default:

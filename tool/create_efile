@@ -1,0 +1,27 @@
+#!/bin/bash
+
+ETPL=$1
+shift
+ENTRY=$1
+shift
+VDST=$1
+shift
+IPORT=$1
+
+if [ "$1" = "" ]; then
+	echo "need etmpl entry-file vdst int-port"
+	exit 1
+fi
+
+if [ ! -e "$ETPL" ]; then
+	echo "entry template does not exist"
+	exit 1
+fi
+
+vdst_cor=$(echo $VDST | sed -e 's/\//\\\//g')
+
+cp -f "$ETPL" "$ENTRY"
+sed -i "s/%vdst%/$vdst_cor/g" "$ENTRY"
+sed -i "s/%iport%/$IPORT/g"   "$ENTRY"
+
+echo "done"

@@ -1,0 +1,41 @@
+#!/bin/bash
+
+BTPL=$1
+shift
+BLDDIR=$1
+shift
+ARCH=$1
+shift
+IPORT=$1
+shift
+VDST=$1
+shift
+PROXY=$1
+
+if [ "$ARCH" = "" ]; then
+	echo "need btpl builddir arch <proxy>"
+	exit 1
+fi
+
+if [ ! -e "$BTPL" ]; then
+	echo "docker file template does not exist"
+	exit 1
+fi
+
+if [ ! -d "$BLDDIR" ]; then
+	echo "build dir does not exist"
+	exit 1
+fi
+
+vdst_cor=$(echo $VDST | sed -e 's/\//\\\//g')
+
+cp -f "$BTPL" "$BLDDIR/Dockerfile"
+
+sed -i "s/%proxy%/$PROXY/g"   "$BLDDIR/Dockerfile"
+sed -i "s/%vdst%/$vdst_cor/g" "$BLDDIR/Dockerfile"
+sed -i "s/%arch%/$ARCH/g"     "$BLDDIR/Dockerfile"
+sed -i "s/%iport%/$IPORT/g"   "$BLDDIR/Dockerfile"
+
+chmod go-r "$BLDDIR/Dockerfile"
+
+echo "done"

@@ -1,0 +1,16 @@
+FROM debian:8-slim
+
+ADD ./docker-entrypoint.sh /
+
+RUN apt-get update && apt-get install -y \
+  vim \
+  curl \
+  libcurl3-gnutls \
+  procps
+
+RUN mkdir -p %vdst% /domoticz
+RUN %proxy% curl -SL https://releases.domoticz.com/releases/release/domoticz_linux_%arch%.tgz | tar -xzC /domoticz
+
+EXPOSE %iport%
+
+CMD /docker-entrypoint.sh

@@ -1,0 +1,42 @@
+#!/bin/bash
+
+CTPL=$1
+shift
+IMGNAME=$1
+shift
+IMGVERS=$1
+shift
+COMPOSE=$1
+shift
+VSRC=$1
+shift
+VDST=$1
+shift
+CNAME=$1
+shift
+EPORT=$1
+shift
+IPORT=$1
+
+if [ "$1" = "" ]; then
+	echo "need ctmpl imgname imgvers composefile vsrc vdst container-name ext-port int-port"
+	exit 1
+fi
+
+if [ ! -e "$CTPL" ]; then
+	echo "compose template does not exist"
+	exit 1
+fi
+
+vsrc_cor=$(echo $VSRC | sed -e 's/\//\\\//g')
+vdst_cor=$(echo $VDST | sed -e 's/\//\\\//g')
+
+cp -f "$CTPL" "$COMPOSE"
+sed -i "s/%imgname%/$IMGNAME:$IMGVERS/g"  "$COMPOSE"
+sed -i "s/%vsrc%/$vsrc_cor/g"   "$COMPOSE"
+sed -i "s/%vdst%/$vdst_cor/g"   "$COMPOSE"
+sed -i "s/%name%/$CNAME/g"  "$COMPOSE"
+sed -i "s/%eport%/$EPORT/g" "$COMPOSE"
+sed -i "s/%iport%/$IPORT/g" "$COMPOSE"
+
+echo "done"
