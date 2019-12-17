@@ -19,14 +19,14 @@ all:	files
 files:	$(DFILE) $(CFILE) $(ENTRY)
 
 $(DFILE): $(DTPL) vars.env
-	make -p $(BLDDIR)
+	mkdir -p $(BLDDIR)
 	tool/create_dfile $(DTPL) $(BLDDIR) $(ARCH) $(IPORT) $(CONF_ON_CONT) $(PROXY)
 
 $(CFILE): $(CTPL) vars.env
 	tool/create_cfile $(CTPL) $(IMAGE_NAME) $(VERSION) $(CFILE) $(CONF_ON_HOST) $(CONF_ON_CONT) $(CONTAINER_NAME) $(EPORT) $(IPORT)
 
 $(ENTRY): $(ETPL)
-	make -p contents
+	mkdir -p contents
 	tool/create_efile $(ETPL) $(ENTRY) $(CONF_ON_CONT) $(IPORT)
 
 run:
@@ -38,3 +38,4 @@ list:
 
 clean:
 	rm -f $(CFILE) $(DFILE) $(SMBCF) $(ENTRY)
+	rmdir $(BLDDIR)
