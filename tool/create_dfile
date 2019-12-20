@@ -28,11 +28,14 @@ if [ ! -d "$BLDDIR" ]; then
 fi
 
 vdst_cor=$(echo $VDST | sed -e 's/\//\\\//g')
+vdst_doubesc_cor=$(echo $VDST | sed -e 's/\//\\\\\\\//g')
+echo "$vdst_doubesc_cor"
 
 cp -f "$BTPL" "$BLDDIR/Dockerfile"
 
 sed -i "s/%proxy%/$PROXY/g"   "$BLDDIR/Dockerfile"
 sed -i "s/%vdst%/$vdst_cor/g" "$BLDDIR/Dockerfile"
+sed -i "s/%vdst_doubesc%/$vdst_doubesc_cor/g" "$BLDDIR/Dockerfile"
 sed -i "s/%arch%/$ARCH/g"     "$BLDDIR/Dockerfile"
 sed -i "s/%iport%/$IPORT/g"   "$BLDDIR/Dockerfile"
 
