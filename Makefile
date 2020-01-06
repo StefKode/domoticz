@@ -13,7 +13,9 @@ CTPL  = templates/docker-compose.yml.tmpl
 ETPL  = templates/docker-entrypoint.sh.tmpl
 ENTRY = contents/docker-entrypoint.sh
 
-all:	files
+all:	build run
+
+build:	files
 	sudo docker build -t $(IMAGE_NAME):$(VERSION) -f build/Dockerfile contents
 
 files:	$(DFILE) $(CFILE) $(ENTRY)
@@ -29,7 +31,7 @@ $(ENTRY): $(ETPL)
 	mkdir -p contents
 	tool/create_efile $(ETPL) $(ENTRY) $(CONF_ON_CONT) $(IPORT)
 
-run:
+run:	files
 	sudo docker-compose up -d
 
 list:

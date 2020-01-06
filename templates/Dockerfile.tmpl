@@ -1,7 +1,5 @@
 FROM debian:buster-slim
 
-ADD ./docker-entrypoint.sh /
-
 #---preparation---
 RUN cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 RUN apt-get update
@@ -25,6 +23,10 @@ RUN cd /boost/boost_1_71_0 && ./b2 stage threading=multi link=static --with-thre
 RUN cd /boost/boost_1_71_0 && ./b2 install threading=multi link=static --with-thread --with-system
 RUN rm -Rf /boost
 
+#--step: OpenZwave
+RUN git clone https://github.com/OpenZWave/open-zwave open-zwave-read-only
+RUN cd open-zwave-read-only && make && make install
+
 #---step: domoticz---
 RUN git clone https://github.com/domoticz/domoticz.git dev-domoticz
 RUN cd /dev-domoticz && cmake -DCMAKE_BUILD_TYPE=Release CMakeLists.txt -DUSE_OPENSSL_STATIC="NO" && make
@@ -44,5 +46,6 @@ RUN chown -R app.app %vdst%
 VOLUME %vdst%
 
 #---step: finalize--
+ADD ./docker-entrypoint.sh /
 EXPOSE %iport%
 CMD /docker-entrypoint.sh
