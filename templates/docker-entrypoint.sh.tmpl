@@ -1,6 +1,6 @@
 #!/bin/bash
-/domoticz/domoticz -www %iport% -wwwbind 0.0.0.0 -wwwroot /domoticz/www -dbase %vdst%/domoticz.db -daemon 
-#/etc/init.d/domoticz.sh start
+sleep 10
+/etc/init.d/domoticz.sh start
 while [ 1 ];
 do
 	sleep 60

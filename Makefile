@@ -38,6 +38,9 @@ list:
 	sudo docker container list -a
 	sudo docker image list
 
+attach:
+	sudo tool/attach $(CONTAINER_NAME) 
+
 clean:
 	rm -f $(CFILE) $(DFILE) $(SMBCF) $(ENTRY)
 	rmdir $(BLDDIR)
