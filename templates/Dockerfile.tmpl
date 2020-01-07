@@ -34,7 +34,8 @@ RUN cd /dev-domoticz && cmake -DCMAKE_BUILD_TYPE=Release CMakeLists.txt -DUSE_OP
 #--step: startup--
 RUN sed -i 's/^USERNAME=.*$/USERNAME=app/' /dev-domoticz/domoticz.sh
 RUN sed -i 's/^DAEMON=.*$/DAEMON=\/home\/app\/domoticz\/$NAME/' /dev-domoticz/domoticz.sh
-RUN sed -i 's/^DAEMON_ARGS="-daemon".*$/DAEMON_ARGS="-daemon -www %iport% -dbase %vdst_doubesc%\/domoticz.db"/' /dev-domoticz/domoticz.sh
+#RUN sed -i 's/^DAEMON_ARGS="-daemon".*$/DAEMON_ARGS="-daemon -www %iport% -dbase %vdst_doubesc%\/domoticz.db"/' /dev-domoticz/domoticz.sh
+RUN sed -i 's/^DAEMON_ARGS="-daemon".*$/DAEMON_ARGS="-www %iport% -dbase %vdst_doubesc%\/domoticz.db"/' /dev-domoticz/domoticz.sh
 RUN cp /dev-domoticz/domoticz.sh /etc/init.d
 RUN chmod +x /etc/init.d/domoticz.sh
 
